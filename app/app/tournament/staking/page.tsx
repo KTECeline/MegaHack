@@ -5,26 +5,171 @@ import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Trophy, Wallet, Check, Shield, Zap, LockIcon, PlayCircle } from "lucide-react"
 
+// Add proper TypeScript declarations for Solana wallets
+declare global {
+  interface Window {
+    solana?: {
+      isPhantom?: boolean
+      connect: (opts?: any) => Promise<{ publicKey: { toString: () => string } }>
+      disconnect: () => Promise<void>
+      on: (event: string, callback: (args: any) => void) => void
+      request: (args: { method: string; params?: any }) => Promise<any>
+      publicKey: { toString: () => string } | null
+      isConnected: boolean
+    }
+  }
+}
+
+// Add wallet types
+interface WalletInfo {
+  address: string
+  balance: string
+  isConnected: boolean
+}
+
 export default function StakingPage() {
   const router = useRouter()
   const [characterData, setCharacterData] = useState<any>(null)
-  const [walletConnected, setWalletConnected] = useState(false)
+  const [wallet, setWallet] = useState<WalletInfo>({
+    address: '',
+    balance: '0',
+    isConnected: false
+  })
   const [staked, setStaked] = useState(false)
   const [staking, setStaking] = useState(false)
   const [starting, setStarting] = useState(false)
 
-  // Load character data from localStorage on component mount
+  // Check for existing wallet connection on mount
   useEffect(() => {
+    checkWalletConnection()
     const storedData = localStorage.getItem("selectedCharacterData")
     if (storedData) {
       setCharacterData(JSON.parse(storedData))
     }
+
+    // Set up periodic wallet connection checks
+    const checkInterval = setInterval(checkWalletConnection, 2000)
+    
+    return () => clearInterval(checkInterval)
   }, [])
 
-  // Function to simulate wallet connection
-  const connectWallet = () => {
-    setWalletConnected(true)
+  // Function to check if wallet is already connected
+  const checkWalletConnection = async () => {
+    if (typeof window !== 'undefined' && window.solana) {
+      try {
+        if (window.solana.isConnected && window.solana.publicKey) {
+          const address = window.solana.publicKey.toString()
+          const balance = await getWalletBalance(address)
+          setWallet({
+            address,
+            balance,
+            isConnected: true
+          })
+        } else {
+          // No wallet connected
+          setWallet({
+            address: '',
+            balance: '0',
+            isConnected: false
+          })
+        }
+      } catch (error) {
+        console.error('Error checking wallet connection:', error)
+        setWallet({
+          address: '',
+          balance: '0',
+          isConnected: false
+        })
+      }
+    } else {
+      // No Solana wallet provider found
+      setWallet({
+        address: '',
+        balance: '0',
+        isConnected: false
+      })
+    }
   }
+
+  // Function to get wallet balance (for $PIXEL token)
+  const getWalletBalance = async (address: string): Promise<string> => {
+    try {
+      // This is a placeholder - replace with actual SPL token balance query
+      // You would typically use @solana/web3.js and @solana/spl-token
+      // const connection = new Connection(clusterApiUrl('mainnet-beta'))
+      // const tokenAccount = await connection.getTokenAccountsByOwner(publicKey, {
+      //   mint: PIXEL_TOKEN_MINT_ADDRESS
+      // })
+      // const balance = await connection.getTokenAccountBalance(tokenAccount.value[0].pubkey)
+      
+      // For now, return a simulated balance
+      return "2,500"
+    } catch (error) {
+      console.error('Error getting balance:', error)
+      return "0"
+    }
+  }
+
+  // Function to connect Solana wallet
+  const connectWallet = async () => {
+    if (typeof window !== 'undefined' && window.solana) {
+      try {
+        const response = await window.solana.connect()
+        if (response.publicKey) {
+          const address = response.publicKey.toString()
+          const balance = await getWalletBalance(address)
+          
+          setWallet({
+            address,
+            balance,
+            isConnected: true
+          })
+
+          // Listen for disconnect events
+          window.solana.on('disconnect', handleDisconnect)
+          window.solana.on('accountChanged', handleAccountChanged)
+        }
+      } catch (error) {
+        console.error('Error connecting wallet:', error)
+        alert('Failed to connect wallet. Please try again.')
+      }
+    } else {
+      alert('No Solana wallet detected. Please install Phantom, Solflare, or another Solana wallet.')
+    }
+  }
+
+  // Handle account changes
+  const handleAccountChanged = (publicKey: any) => {
+    if (publicKey) {
+      const address = publicKey.toString()
+      getWalletBalance(address).then(balance => {
+        setWallet({
+          address,
+          balance,
+          isConnected: true
+        })
+      })
+    } else {
+      setWallet({ address: '', balance: '0', isConnected: false })
+      setStaked(false)
+    }
+  }
+
+  // Handle wallet disconnect
+  const handleDisconnect = () => {
+    setWallet({ address: '', balance: '0', isConnected: false })
+    setStaked(false) // Reset staking status when wallet disconnects
+  }
+
+  // Cleanup event listeners on unmount
+  useEffect(() => {
+    return () => {
+      if (typeof window !== 'undefined' && window.solana) {
+        window.solana.on('disconnect', () => {}) // Remove listener
+        window.solana.on('accountChanged', () => {}) // Remove listener
+      }
+    }
+  }, [])
 
   // Function to simulate staking
   const stakeTokens = () => {
@@ -169,7 +314,7 @@ export default function StakingPage() {
             </div>
 
             {/* Wallet Connection */}
-            {!walletConnected ? (
+            {!wallet.isConnected ? (
               <button
                 onClick={connectWallet}
                 className="w-full bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-4 py-3 font-bold border-b-4 border-yellow-600 hover:border-yellow-700 transition-colors pixelated flex items-center justify-center gap-2"
@@ -184,7 +329,10 @@ export default function StakingPage() {
                     <Wallet className="h-5 w-5 text-green-400" />
                     <p className="text-white text-sm font-bold">Wallet Connected</p>
                   </div>
-                  <p className="text-white text-xs mt-1">Balance: 2,500 $PIXEL</p>
+                  <p className="text-white text-xs mt-1">
+                    Address: {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
+                  </p>
+                  <p className="text-white text-xs">Balance: {wallet.balance} $PIXEL</p>
                 </div>
 
                 {/* Staking Button */}

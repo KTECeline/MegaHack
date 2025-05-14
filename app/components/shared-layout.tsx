@@ -47,12 +47,12 @@ export function SharedLayout({ children }: SharedLayoutProps) {
           <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-4 py-2 font-bold border-b-4 border-yellow-600 hover:border-yellow-700 transition-colors pixelated">
             CONNECT WALLET
           </button>
-          <Link
-            href="/profile"
+          <button
+            onClick={() => router.push("/profile")}
             className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-4 py-2 font-bold border-b-4 border-yellow-600 hover:border-yellow-700 transition-colors pixelated flex items-center justify-center"
           >
             PROFILE
-          </Link>
+          </button>
         </div>
       </header>
 

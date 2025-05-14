@@ -13,6 +13,7 @@ import {
   Calendar,
 } from "lucide-react"
 import { useState, useEffect, useRef } from "react"
+import { WalletConnection } from "@/components/wallet-connection"
 
 export default function Home() {
   // Update the countdown timer logic to handle 3-month seasons
@@ -223,9 +224,7 @@ export default function Home() {
         </nav>
 
         <div className="ml-8 flex gap-3">
-          <button className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-4 py-2 font-bold border-b-4 border-yellow-600 hover:border-yellow-700 transition-colors pixelated">
-            CONNECT WALLET
-          </button>
+          <WalletConnection />
           <Link
             href="/profile"
             className="bg-yellow-400 hover:bg-yellow-500 text-gray-800 px-4 py-2 font-bold border-b-4 border-yellow-600 hover:border-yellow-700 transition-colors pixelated flex items-center justify-center"

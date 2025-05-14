@@ -683,3 +683,87 @@ body {
     background-position: 0 0;
   }
 }
+
+/* Solana Wallet Adapter Styles - Updated to match navigation */
+.wallet-adapter-button-trigger,
+.wallet-adapter-button {
+  background-color: #facc15 !important; /* bg-yellow-400 */
+  color: #1f2937 !important;            /* text-gray-800 */
+  border-bottom: 4px solid #ca8a04 !important; /* border-yellow-600 */
+  font-weight: bold !important;
+  font-family: "Press Start 2P", system-ui, sans-serif !important; /* pixelated */
+  padding: 0.5rem 1rem !important; /* py-2 px-4 */
+  border-radius: 0 !important;
+  border: none !important;
+  transition: all 0.2s ease !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  image-rendering: pixelated !important;
+  font-size: 16px !important; /* Match PROFILE button size */
+  height: auto !important;
+  line-height: 1.2 !important;
+  box-shadow: none !important;
+}
+
+.wallet-adapter-button-trigger:hover,
+.wallet-adapter-button:hover:not(:disabled) {
+  background-color: #fde047 !important; /* hover:bg-yellow-500 */
+  color: #1f2937 !important;
+  border-bottom: 4px solid #a16207 !important; /* hover:border-yellow-700 */
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  font-family: "Press Start 2P", system-ui, sans-serif !important;
+  font-size: 16px !important;
+  font-weight: bold !important;
+  padding: 0.5rem 1rem !important;
+  transition: background 0.2s;
+}
+
+.wallet-adapter-button-trigger:active,
+.wallet-adapter-button:active {
+  border-bottom-width: 2px !important;
+  transform: translateY(2px) !important;
+}
+
+.wallet-adapter-button[data-connected="true"] {
+  background-color: #facc15 !important; /* bg-yellow-400 */
+  color: #1f2937 !important;
+  border-bottom: 4px solid #ca8a04 !important;
+}
+
+/* Dropdown styles to match theme */
+.wallet-adapter-dropdown {
+  background-color: #78c4f7 !important;
+  border: 4px solid #0ea5e9 !important;
+  border-radius: 0 !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  font-family: "Press Start 2P", system-ui, sans-serif !important;
+}
+
+.wallet-adapter-dropdown-list {
+  padding: 0.5rem 0 !important;
+}
+
+.wallet-adapter-dropdown-list-item {
+  padding: 0.75rem 1rem !important;
+  font-size: 12px !important;
+  color: white !important;
+  transition: background-color 0.2s ease !important;
+}
+
+.wallet-adapter-dropdown-list-item:hover {
+  background-color: #ffcc5c !important;
+  color: #1f2937 !important;
+}
+
+/* Remove any default button styling from wallet adapter */
+.wallet-adapter-button-start-icon,
+.wallet-adapter-button-end-icon {
+  display: none !important;
+}
+
+/* Style the wallet name text */
+.wallet-adapter-button .wallet-adapter-button-label {
+  font-family: "Press Start 2P", system-ui, sans-serif !important;
+  font-size: 14px !important;
+}

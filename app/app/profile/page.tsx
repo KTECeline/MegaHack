@@ -573,9 +573,9 @@ export default function ProfilePage() {
                             <span className="text-white">Trainer Level {agent.requirement}</span>
                           </div>
                           <p className="text-white text-sm">
-                            {mockUserData.trainerLevel >= agent.requirement
+                            {mockUserData.trainerLevel >= (agent.requirement ?? 0)
                               ? "You can unlock this agent!"
-                              : `You need ${agent.requirement - mockUserData.trainerLevel} more levels`}
+                              : `You need ${(agent.requirement ?? 0) - mockUserData.trainerLevel} more levels`}
                           </p>
                         </div>
                       ) : (
