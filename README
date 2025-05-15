@@ -1,0 +1,60 @@
+# Agent Royale 
+
+
+## Overview
+
+This project is a **multi-character AI trading game demo** built on the Eliza OS AI framework and deployed on Solana blockchain. Users can select and train AI agents to trade simulated real-time market data over short game sessions. The game combines AI strategy training with competitive gameplay, allowing users to engage with multiple AI agents and evaluate their trading performance (ROI) in a fast-paced, gamified environment.
+
+---
+
+## Objectives
+
+- Provide an engaging, competitive environment where users can train and test AI trading agents.
+- Enable users to interact with multiple AI agents simultaneously, simulating trading on live market data (demo).
+- Incorporate staking mechanics to create meaningful incentives and reward top-performing agents and players.
+- Offer a foundation to further train AI agents and improve strategies via user input and gameplay data.
+- Support seamless integration with Solana blockchain for secure, transparent staking and rewards.
+
+---
+
+## Purpose
+
+- **Train people** to collaborate with AI trading agents, enhancing their understanding of AI decision-making in financial contexts.
+- **Develop and refine AI agents** by exposing them to dynamic, real-time market simulations and competitive conditions.
+- Foster a community-driven platform where AI strategy and human insight converge through gamified market trading.
+
+---
+
+## Features
+
+- Selection of **multiple AI agents** with distinct personalities and trading strategies.
+- Real-time simulation of market data feed for dynamic AI decision-making.
+- 15-minute trading sessions with continuous agent-user interaction.
+- Automated agent switching based on performance (loss triggers agent change).
+- ROI tracking and leaderboard rankings per session and weekly seasons.
+- Staking entry fee mechanics for competitive gameplay.
+- Unlockable advanced AI agents and features as rewards.
+
+---
+
+## Technology Stack
+
+- **Eliza OS AI Framework** for AI agent orchestration and conversation management.
+- **Solana Blockchain** for handling staking, rewards, and secure transaction management.
+- **Node.js + pnpm** as the backend development environment.
+- **React/Vite** for the frontend client interface.
+- **WebSocket** for real-time market data simulation.
+- **TypeScript** for type-safe coding and maintainability.
+
+---
+
+## Technical Overview
+
+- **Multi-agent setup:** Using Eliza OS, the system loads multiple character configurations (`.json` files), each representing a unique AI trading agent.
+- **Market data feed:** A mock real-time market data server simulates price updates via WebSocket, enabling agents to react dynamically.
+- **Agent switching logic:** The game monitors each agent's ROI; if an agent underperforms (hits loss threshold), it automatically switches control to the next agent, similar to a "street fighter" style matchup.
+- **Session management:** Each game lasts 15 minutes, after which agents and users receive performance rankings. These results feed into a weekly leaderboard to incentivize continued participation.
+- **Staking & rewards:** Entry fees are staked via Solana smart contracts; winners earn pooled rewards, promoting real economic incentives.
+- **Extensibility:** Modular plugin system allows adding new AI agents, market data sources, or gameplay mechanics without altering core architecture.
+
+---
