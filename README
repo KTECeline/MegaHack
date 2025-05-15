@@ -1,6 +1,5 @@
 # Agent Royale 
-website: https://vercel.com/ktecelines-projects/agent-royale-ai
-
+website:https://agent-royale-ai.vercel.app/
 ## Overview
 
 This project is a **multi-character AI trading game demo** built on the Eliza OS AI framework and deployed on Solana blockchain. Users can select and train AI agents to trade simulated real-time market data over short game sessions. The game combines AI strategy training with competitive gameplay, allowing users to engage with multiple AI agents and evaluate their trading performance (ROI) in a fast-paced, gamified environment.
