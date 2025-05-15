@@ -398,7 +398,7 @@ export default function CharacterSelect() {
             <div className="flex items-center gap-3 bg-sky-500/50 p-3 rounded-lg">
               <Trophy className="h-6 w-6 text-yellow-300 flex-shrink-0" />
               <div>
-                <p className="font-bold">Prize Pool: 50,000 $PIXEL</p>
+                <p className="font-bold">Prize Pool: 50,000 SOL</p>
                 <p className="text-sm">Top 3 agents share the rewards</p>
               </div>
             </div>
@@ -414,7 +414,7 @@ export default function CharacterSelect() {
             <div className="flex items-center gap-3 bg-sky-500/50 p-3 rounded-lg">
               <Shield className="h-6 w-6 text-yellow-300 flex-shrink-0" />
               <div>
-                <p className="font-bold">Entry Fee: 500 $PIXEL</p>
+                <p className="font-bold">Entry Fee: 0.05 SOL</p>
                 <p className="text-sm">Stake to join the competition</p>
               </div>
             </div>

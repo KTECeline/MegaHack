@@ -516,7 +516,7 @@ export default function Home() {
                               <span className="text-white font-bold text-xl">Prize Pool</span>
                             </div>
                             <p className="text-center text-4xl font-extrabold text-black pixelated">
-                              {tournament.prizePool} $PIXEL
+                              {tournament.prizePool} SOL
                             </p>
                           </div>
                         </div>

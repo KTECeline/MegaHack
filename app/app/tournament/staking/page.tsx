@@ -4,6 +4,7 @@ import { useState, useEffect } from "react"
 import { useRouter } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Trophy, Wallet, Check, Shield, Zap, LockIcon, PlayCircle } from "lucide-react"
+import { Connection, PublicKey, clusterApiUrl, LAMPORTS_PER_SOL } from "@solana/web3.js"
 
 // Add proper TypeScript declarations for Solana wallets
 declare global {
@@ -38,24 +39,34 @@ export default function StakingPage() {
   const [staked, setStaked] = useState(false)
   const [staking, setStaking] = useState(false)
   const [starting, setStarting] = useState(false)
+  const [connection, setConnection] = useState<Connection | null>(null)
+
+  // Initialize Solana connection
+  useEffect(() => {
+    // Use devnet for testing or mainnet-beta for production
+    const conn = new Connection(clusterApiUrl('devnet'), 'confirmed')
+    setConnection(conn)
+  }, [])
 
   // Check for existing wallet connection on mount
   useEffect(() => {
-    checkWalletConnection()
-    const storedData = localStorage.getItem("selectedCharacterData")
-    if (storedData) {
-      setCharacterData(JSON.parse(storedData))
-    }
+    if (connection) {
+      checkWalletConnection()
+      const storedData = localStorage.getItem("selectedCharacterData")
+      if (storedData) {
+        setCharacterData(JSON.parse(storedData))
+      }
 
-    // Set up periodic wallet connection checks
-    const checkInterval = setInterval(checkWalletConnection, 2000)
-    
-    return () => clearInterval(checkInterval)
-  }, [])
+      // Set up periodic wallet connection checks
+      const checkInterval = setInterval(checkWalletConnection, 2000)
+      
+      return () => clearInterval(checkInterval)
+    }
+  }, [connection])
 
   // Function to check if wallet is already connected
   const checkWalletConnection = async () => {
-    if (typeof window !== 'undefined' && window.solana) {
+    if (typeof window !== 'undefined' && window.solana && connection) {
       try {
         if (window.solana.isConnected && window.solana.publicKey) {
           const address = window.solana.publicKey.toString()
@@ -91,19 +102,22 @@ export default function StakingPage() {
     }
   }
 
-  // Function to get wallet balance (for $PIXEL token)
+  // Function to get wallet balance (for SOL token)
   const getWalletBalance = async (address: string): Promise<string> => {
     try {
-      // This is a placeholder - replace with actual SPL token balance query
-      // You would typically use @solana/web3.js and @solana/spl-token
-      // const connection = new Connection(clusterApiUrl('mainnet-beta'))
-      // const tokenAccount = await connection.getTokenAccountsByOwner(publicKey, {
-      //   mint: PIXEL_TOKEN_MINT_ADDRESS
-      // })
-      // const balance = await connection.getTokenAccountBalance(tokenAccount.value[0].pubkey)
+      if (!connection) return "0"
       
-      // For now, return a simulated balance
-      return "2,500"
+      // Create a PublicKey from the address string
+      const publicKey = new PublicKey(address)
+      
+      // Get the account balance in lamports
+      const lamports = await connection.getBalance(publicKey)
+      
+      // Convert lamports to SOL (1 SOL = 1,000,000,000 lamports)
+      const solBalance = lamports / LAMPORTS_PER_SOL
+      
+      // Format to 2 decimal places
+      return solBalance.toFixed(2)
     } catch (error) {
       console.error('Error getting balance:', error)
       return "0"
@@ -112,7 +126,7 @@ export default function StakingPage() {
 
   // Function to connect Solana wallet
   const connectWallet = async () => {
-    if (typeof window !== 'undefined' && window.solana) {
+    if (typeof window !== 'undefined' && window.solana && connection) {
       try {
         const response = await window.solana.connect()
         if (response.publicKey) {
@@ -139,15 +153,14 @@ export default function StakingPage() {
   }
 
   // Handle account changes
-  const handleAccountChanged = (publicKey: any) => {
-    if (publicKey) {
+  const handleAccountChanged = async (publicKey: any) => {
+    if (publicKey && connection) {
       const address = publicKey.toString()
-      getWalletBalance(address).then(balance => {
-        setWallet({
-          address,
-          balance,
-          isConnected: true
-        })
+      const balance = await getWalletBalance(address)
+      setWallet({
+        address,
+        balance,
+        isConnected: true
       })
     } else {
       setWallet({ address: '', balance: '0', isConnected: false })
@@ -305,10 +318,10 @@ export default function StakingPage() {
             <div className="bg-yellow-400/20 backdrop-blur-sm p-4 rounded-lg border-2 border-yellow-500/30 mb-6">
               <div className="flex items-center gap-3 mb-2">
                 <LockIcon className="h-6 w-6 text-yellow-300" />
-                <p className="text-white font-bold">Entry Fee: 500 $PIXEL</p>
+                <p className="text-white font-bold">Entry Fee: 5 SOL</p>
               </div>
               <p className="text-white text-sm">
-                Stake $PIXEL tokens to enter the tournament. Your stake will be locked for the duration of the
+                Stake SOL tokens to enter the tournament. Your stake will be locked for the duration of the
                 tournament.
               </p>
             </div>
@@ -332,7 +345,7 @@ export default function StakingPage() {
                   <p className="text-white text-xs mt-1">
                     Address: {wallet.address.slice(0, 6)}...{wallet.address.slice(-4)}
                   </p>
-                  <p className="text-white text-xs">Balance: {wallet.balance} $PIXEL</p>
+                  <p className="text-white text-xs">Balance: {wallet.balance} SOL</p>
                 </div>
 
                 {/* Staking Button */}
@@ -352,7 +365,7 @@ export default function StakingPage() {
                     ) : (
                       <>
                         <Shield className="h-5 w-5" />
-                        STAKE 500 $PIXEL
+                        STAKE 0.05 SOL
                       </>
                     )}
                   </button>
@@ -361,7 +374,7 @@ export default function StakingPage() {
                     <div className="bg-green-400/20 backdrop-blur-sm p-3 rounded-lg border-2 border-green-500/30">
                       <div className="flex items-center gap-2">
                         <Check className="h-5 w-5 text-green-400" />
-                        <p className="text-white text-sm font-bold">500 $PIXEL Staked Successfully</p>
+                        <p className="text-white text-sm font-bold">0.05 SOL Staked Successfully</p>
                       </div>
                       <p className="text-white text-xs mt-1">Your agent is ready to enter the tournament!</p>
                     </div>
@@ -403,7 +416,7 @@ export default function StakingPage() {
             <div className="flex items-center gap-3 bg-sky-500/50 p-3 rounded-lg">
               <Trophy className="h-6 w-6 text-yellow-300 flex-shrink-0" />
               <div>
-                <p className="font-bold">Prize Pool: 50,000 $PIXEL</p>
+                <p className="font-bold">Prize Pool: 50,000 SOL</p>
                 <p className="text-sm">Top 3 agents share the rewards</p>
               </div>
             </div>
@@ -419,7 +432,7 @@ export default function StakingPage() {
             <div className="flex items-center gap-3 bg-sky-500/50 p-3 rounded-lg">
               <Shield className="h-6 w-6 text-yellow-300 flex-shrink-0" />
               <div>
-                <p className="font-bold">Entry Fee: 500 $PIXEL</p>
+                <p className="font-bold">Entry Fee: 0.05 SOL</p>
                 <p className="text-sm">Stake to join the competition</p>
               </div>
             </div>

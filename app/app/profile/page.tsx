@@ -161,7 +161,7 @@ const mockClaimableRewards = [
     type: "tournament",
     name: "Yield Hunters",
     amount: 12500,
-    currency: "$PIXEL",
+    currency: "SOL",
     date: "Apr 22, 2025",
     claimed: false,
   },
@@ -170,7 +170,7 @@ const mockClaimableRewards = [
     type: "referral",
     name: "Referral Bonus",
     amount: 500,
-    currency: "$PIXEL",
+    currency: "SOL",
     date: "May 5, 2025",
     claimed: false,
   },
@@ -348,7 +348,7 @@ export default function ProfilePage() {
                           </div>
                           <div className="flex items-center gap-4 mt-2 md:mt-0">
                             <div className="bg-yellow-400/30 px-3 py-1 rounded-lg border border-yellow-500/50">
-                              <span className="text-white font-bold">Stake: {entry.stake} $PIXEL</span>
+                              <span className="text-white font-bold">Stake: {entry.stake} SOL</span>
                             </div>
                             <button>
                               {expandedEntry === entry.id ? (
@@ -582,7 +582,7 @@ export default function ProfilePage() {
                         <div className="text-center">
                           <p className="text-white font-bold mb-1">PREMIUM AGENT</p>
                           <div className="bg-yellow-400/30 px-3 py-1 rounded-lg border border-yellow-500/50 mb-2">
-                            <span className="text-white">{agent.price} $PIXEL</span>
+                            <span className="text-white">{agent.price} SOL</span>
                           </div>
                           <button className="mt-2 bg-green-400 hover:bg-green-500 text-white px-3 py-1 font-bold border-b-2 border-green-600 hover:border-green-700 transition-colors pixelated text-sm">
                             PURCHASE
@@ -760,7 +760,7 @@ export default function ProfilePage() {
                           </div>
                           <div className="flex items-center gap-4 mt-2 md:mt-0">
                             <div className="bg-yellow-400/30 px-3 py-1 rounded-lg border border-yellow-500/50">
-                              <span className="text-white font-bold">Stake: {entry.stake} $PIXEL</span>
+                              <span className="text-white font-bold">Stake: {entry.stake} SOL</span>
                             </div>
                             <button>
                               {expandedEntry === entry.id ? (
@@ -868,7 +868,7 @@ export default function ProfilePage() {
                                   <Trophy className="h-4 w-4 text-yellow-300" />
                                   <span className="text-white text-sm font-bold">Reward</span>
                                 </div>
-                                <p className="text-white text-lg">{entry.reward} $PIXEL</p>
+                                <p className="text-white text-lg">{entry.reward} SOL</p>
                               </div>
                               <div className="bg-gray-600/30 p-3 rounded-lg">
                                 <div className="flex items-center gap-2 mb-1">
@@ -938,11 +938,11 @@ export default function ProfilePage() {
               <ul className="text-white text-sm space-y-2">
                 <li className="flex items-start gap-2">
                   <Gift className="h-4 w-4 text-yellow-300 mt-0.5 flex-shrink-0" />
-                  <span>You get 500 $PIXEL for each friend who joins</span>
+                  <span>You get 10 SOL for each friend who joins</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Gift className="h-4 w-4 text-yellow-300 mt-0.5 flex-shrink-0" />
-                  <span>Your friend gets 250 $PIXEL welcome bonus</span>
+                  <span>Your friend gets 5 SOL welcome bonus</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <Gift className="h-4 w-4 text-yellow-300 mt-0.5 flex-shrink-0" />

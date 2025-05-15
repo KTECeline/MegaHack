@@ -27,7 +27,7 @@ export default function LoadingPage() {
   const [initialPlayerScore] = useState(10000) // Store initial score for ROI calculation
   const [tournamentComplete, setTournamentComplete] = useState(false)
   const [hoveredRow, setHoveredRow] = useState<number | null>(null)
-  const [timeRemaining, setTimeRemaining] = useState(15 * 60) // 15 minutes in seconds
+  const [timeRemaining, setTimeRemaining] = useState(0.01 * 60) // 15 minutes in seconds
   const [chatMessages, setChatMessages] = useState<{ sender: string; message: string; timestamp: string }[]>([
     {
       sender: "System",
