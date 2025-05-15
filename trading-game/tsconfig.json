@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "types": ["mocha", "chai"],
+    "typeRoots": ["./node_modules/@types"],
+    "lib": ["es2015"],
+    "module": "commonjs",
+    "resolveJsonModule": true,
+    "target": "es6",
+    "esModuleInterop": true,
+    "baseUrl": ".",                          // ✅ Add this
+    "paths": {
+      "*": ["node_modules/*", "target/types/*"]   // ✅ And this
+    }
+  },
+  "include": ["tests", "target/types"]       // ✅ Ensure these folders are compiled
+}
